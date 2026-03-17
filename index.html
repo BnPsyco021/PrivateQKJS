@@ -1,277 +1,188 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> CPX da Maré</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>QKJ PRIVATE | QKJ</title>
     <style>
-        body {
-            background-image: url('https://i.imgur.com/v1KFAWs.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        .form-container {
-            background-color: rgba(31, 41, 55, 0.95);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .input-favela {
-            border-bottom: 2px solid #4b5563;
-            transition: all 0.3s ease;
-            background-color: rgba(17, 24, 39, 0.5);
-        }
-        .input-favela:focus {
-            border-bottom-color: #7c3aed;
-            background-color: rgba(17, 24, 39, 0.8);
-        }
-        .radio-tile {
-            transition: all 0.3s ease;
-            background-color: rgba(17, 24, 39, 0.5);
-        }
-        .radio-tile:hover {
-            transform: translateY(-3px);
-            background-color: rgba(17, 24, 39, 0.8);
-        }
-        input[type="radio"]:checked + .radio-tile {
-            border-color: #7c3aed;
-            background-color: rgba(124, 58, 237, 0.2);
-        }
-        select {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.5rem center;
-            background-repeat: no-repeat;
-            background-size: 1.5em 1.5em;
-        }
+        :root { --red: #dd0000; --bg: #0a0b10; --card: #15161c; --input: #1c1d26; --border: #1f212a; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; overflow: hidden; }
+        #loginScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 999; display: flex; align-items: center; justify-content: center; }
+        .login-box { background: var(--card); padding: 40px; border-radius: 12px; border: 1px solid var(--border); width: 320px; text-align: center; }
+        .sidebar { width: 60px; height: 100vh; background: var(--card); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 25px; }
+        .sidebar-icon { width: 22px; cursor: pointer; opacity: 0.5; filter: invert(1); transition: 0.3s; }
+        .sidebar-icon:hover { opacity: 1; filter: drop-shadow(0 0 5px var(--red)); }
+        .main { flex: 1; padding: 20px 30px; display: none; }
+        .status-bar { background: #1a0000; border: 1px solid #330000; padding: 15px; border-radius: 8px; margin: 20px 0; font-size: 13px; }
+        .section-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+        .section-title { font-size: 12px; border-left: 3px solid var(--red); padding-left: 10px; text-transform: uppercase; margin-bottom: 15px; }
+        input, select { width: 100%; background: var(--input); border: 1px solid var(--border); padding: 12px; color: white; border-radius: 6px; margin-bottom: 10px; box-sizing: border-box; outline: none; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; text-transform: uppercase; background: var(--red); color: white; transition: 0.2s; }
+        .btn:hover { background: #ff0000; transform: scale(1.01); }
+        .id-item { background: #0d0e14; padding: 10px; border-radius: 5px; margin-top: 8px; display: flex; justify-content: space-between; font-size: 12px; border: 1px solid var(--border); }
+        .btn-soltar { color: var(--red); cursor: pointer; font-weight: bold; }
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); border: 2px solid var(--red); padding: 30px; border-radius: 15px; z-index: 100; width: 300px; }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <div class="form-container rounded-xl p-8 w-full max-w-2xl">
-        <div class="flex items-center mb-8">
-            <i class="fas fa-home text-4xl mr-4 text-purple-400"></i>
-            <div>
-                <h1 class="text-3xl font-bold text-white">CPX da Maré</h1>
-                <p class="text-gray-300">ByBenny_Psyco</p>
-            </div>
-        </div>
+<body>
 
-        <form id="cadastroForm" class="space-y-6">
-            <!-- Nome -->
-            <div class="relative">
-                <label for="nome" class="block text-sm font-medium text-gray-200 mb-1">Nome Completo</label>
-                <div class="relative">
-                    <i class="fas fa-user absolute left-3 top-3 text-gray-400"></i>
-                    <input type="text" id="nome" class="input-favela w-full text-white pl-10 pr-4 py-3 border-0 border-b-2 focus:ring-0 focus:outline-none placeholder-gray-500 rounded-t" placeholder="Seu nome completo" required>
-                </div>
-            </div>
-
-            <!-- Idade -->
-            <div class="relative">
-                <label for="idade" class="block text-sm font-medium text-gray-200 mb-1">Idade</label>
-                <div class="relative">
-                    <i class="fas fa-birthday-cake absolute left-3 top-3 text-gray-400"></i>
-                    <input type="number" id="idade" min="0" max="120" class="input-favela w-full text-white pl-10 pr-4 py-3 border-0 border-b-2 focus:ring-0 focus:outline-none placeholder-gray-500 rounded-t" placeholder="Sua idade" required>
-                </div>
-            </div>
-
-            <!-- RG -->
-            <div class="relative">
-                <label for="rg" class="block text-sm font-medium text-gray-200 mb-1">RG (Registro Geral)</label>
-                <div class="relative">
-                    <i class="fas fa-id-card absolute left-3 top-3 text-gray-400"></i>
-                    <input type="text" id="rg" class="input-favela w-full text-white pl-10 pr-4 py-3 border-0 border-b-2 focus:ring-0 focus:outline-none placeholder-gray-500 rounded-t" placeholder="Número do seu RG" required>
-                </div>
-            </div>
-
-            <!-- Origem -->
-            <div class="relative">
-                <label class="block text-sm font-medium text-gray-200 mb-3">De onde você é?</label>
-                <div class="grid grid-cols-2 gap-3">
-                    <label class="block">
-                        <input type="radio" name="origem" value="favela" class="hidden" required>
-                        <div class="radio-tile p-4 border-2 border-gray-600 rounded-lg cursor-pointer text-center">
-                            <i class="fas fa-house-user text-2xl mb-2 text-gray-300"></i>
-                            <p class="text-gray-200 font-medium">Da própria comunidade</p>
-                        </div>
-                    </label>
-                    <label class="block">
-                        <input type="radio" name="origem" value="fora" class="hidden">
-                        <div class="radio-tile p-4 border-2 border-gray-600 rounded-lg cursor-pointer text-center">
-                            <i class="fas fa-city text-2xl mb-2 text-gray-300"></i>
-                            <p class="text-gray-200 font-medium">De fora da comunidade</p>
-                        </div>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Horário na Comunidade -->
-            <div class="relative">
-                <label for="horario" class="block text-sm font-medium text-gray-200 mb-1">Qual horário da pra tu brincar na comunidade?</label>
-                <div class="relative">
-                    <i class="fas fa-clock absolute left-3 top-3 text-gray-400"></i>
-                    <select id="horario" class="input-favela w-full text-white pl-10 pr-4 py-3 border-0 border-b-2 focus:ring-0 focus:outline-none rounded-t" required>
-                        <option value="" disabled selected class="text-gray-500">Selecione o horário</option>
-                        <option value="manha" class="bg-gray-800">Manhã (6h - 12h)</option>
-                        <option value="tarde" class="bg-gray-800">Tarde (12h - 18h)</option>
-                        <option value="noite" class="bg-gray-800">Noite (18h - 23h)</option>
-                        <option value="madrugada" class="bg-gray-800">Madrugada (23h - 6h)</option>
-                        <option value="qualquer" class="bg-gray-800">Qualquer hora</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Observações -->
-            <div class="relative">
-                <label for="obs" class="block text-sm font-medium text-gray-200 mb-1">Observações</label>
-                <div class="relative">
-                    <i class="fas fa-comment-dots absolute left-3 top-3 text-gray-400"></i>
-                    <textarea id="obs" rows="3" class="input-favela w-full text-white pl-10 pr-4 py-3 border-0 border-b-2 focus:ring-0 focus:outline-none placeholder-gray-500 rounded-t" placeholder="Alguma informação adicional?"></textarea>
-                </div>
-            </div>
-
-            <!-- Termos -->
-            <div class="flex items-start">
-                <div class="flex items-center h-5">
-                    <input id="termos" name="termos" type="checkbox" class="focus:ring-purple-500 h-4 w-4 text-purple-600 border-gray-300 rounded" required>
-                </div>
-                <div class="ml-3 text-sm">
-                    <label for="termos" class="font-medium text-gray-300">Concordo com os termos do cadastro</label>
-                    <p class="text-gray-400">Seus dados serão usados apenas para fins comunitários</p>
-                </div>
-            </div>
-
-            <!-- Botão -->
-            <div>
-                <button type="submit" class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-300">
-                    <i class="fas fa-paper-plane mr-2"></i> Enviar Cadastro
-                </button>
-            </div>
-        </form>
-
-        <div class="mt-6 text-center">
-            <p class="text-xs text-gray-400">CPX da Maré ©  - Todos os direitos reservados</p>
+    <div id="loginScreen">
+        <div class="login-box">
+            <h2 style="color:var(--red); margin-bottom:30px;">PRIVATE <span style="color:white">LOGIN</span></h2>
+            <input type="text" id="userIn" placeholder="USUÁRIO">
+            <input type="password" id="passIn" placeholder="SENHA">
+            <button class="btn" onclick="tentarLogin()">ENTRAR</button>
         </div>
     </div>
 
-    <script>
-        document.getElementById('cadastroForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // Validar campos obrigatórios
-            const nome = document.getElementById('nome').value;
-            const idade = document.getElementById('idade').value;
-            const rg = document.getElementById('rg').value;
-            const origem = document.querySelector('input[name="origem"]:checked');
-            const horario = document.getElementById('horario').value;
-            const termos = document.getElementById('termos').checked;
-            const obs = document.getElementById('obs').value;
-            
-            if (!nome || !idade || !rg || !origem || !horario || !termos) {
-                alert('Por favor, preencha todos os campos obrigatórios!');
-                return;
+    <div class="sidebar">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" class="sidebar-icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/3524/3524659.png" class="sidebar-icon" onclick="openConfig()">
+        <img src="https://cdn-icons-png.flaticon.com/512/182/182448.png" class="sidebar-icon" onclick="logout()" title="Sair">
+    </div>
+
+    <div class="main" id="dashMain">
+        <div style="font-size: 12px; font-weight: bold;">QKJ <span style="color:var(--red)">PRIVATE</span></div>
+        <div class="status-bar" id="txtStatus">VERIFICANDO OPERADOR...</div>
+
+        <div class="section-card">
+            <div class="section-title">Servidor Alvo</div>
+            <select id="serverSelect">
+                <option disabled selected>Carregando servidores...</option>
+            </select>
+        </div>
+
+        <div style="display: flex; gap: 20px;">
+            <div class="section-card" style="flex: 1;">
+                <div class="section-title">Coleira</div>
+                <input type="text" id="idVitim" placeholder="ID da Vítima">
+                <button class="btn" onclick="addColeira()">PRENDER</button>
+                <div id="coleiraList"></div>
+            </div>
+
+            <div class="section-card" style="flex: 1;">
+                <div class="section-title">Rodízio</div>
+                <input type="text" id="idRodiz" placeholder="ID do Alvo">
+                <button class="btn" onclick="sendRodizio(true)">LIGAR RODÍZIO</button>
+                <button class="btn" style="background:#2a0000; margin-top:5px;" onclick="sendRodizio(false)">DESLIGAR</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalConfig" class="modal">
+        <h3 style="color:var(--red); margin-top:0;">BOT CONFIG</h3>
+        <input type="text" id="ownerInput" placeholder="ID do Dono">
+        <input type="password" id="tokenInput" placeholder="Token Discord">
+        <button class="btn" onclick="saveConfig()">SALVAR</button>
+        <button class="btn" style="background:none; color:gray;" onclick="closeConfig()">FECHAR</button>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getDatabase, ref, set, update, onValue, remove, get } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB3lO20V8QMqx3BCjiLAxlz5_GnuL5yH-k",
+            databaseURL: "https://contas-b30ba-default-rtdb.firebaseio.com",
+            projectId: "contas-b30ba"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const session = localStorage.getItem("qkj_session");
+
+        // --- LOGIN ---
+        window.tentarLogin = async () => {
+            const u = document.getElementById('userIn').value.toLowerCase().trim();
+            const p = document.getElementById('passIn').value;
+            const snapshot = await get(ref(db, `operadores/${u}`));
+            if(snapshot.exists() && snapshot.val().senha === p) {
+                localStorage.setItem("qkj_session", u);
+                location.reload();
+            } else { alert("Acesso negado!"); }
+        };
+
+        window.logout = () => { localStorage.removeItem("qkj_session"); location.reload(); };
+
+        if(session) {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashMain').style.display = 'block';
+            onValue(ref(db, `operadores/${session}`), s => {
+                if(s.exists()) document.getElementById('txtStatus').innerText = `STATUS: ${s.val().plano} | OPERADOR: ${session.toUpperCase()}`;
+            });
+        }
+
+        // --- CONFIGURAÇÃO INDIVIDUAL POR CONTA ---
+        window.openConfig = async () => {
+            if(!session) return;
+            const snapshot = await get(ref(db, `operadores/${session}`));
+            if(snapshot.exists()) {
+                const data = snapshot.val();
+                document.getElementById('ownerInput').value = data.owner_id || "";
+                document.getElementById('tokenInput').value = data.bot_token || "";
             }
-            
-            // Criar objeto com os dados
-            const dadosCadastro = {
-                nome: nome,
-                idade: idade,
-                rg: rg,
-                origem: origem.value,
-                horario: horario,
-                obs: obs || "Nenhuma observação",
-                data: new Date().toLocaleString()
-            };
-            
-            // Mostrar loading no botão
-            const botao = document.querySelector('button[type="submit"]');
-            const textoOriginal = botao.innerHTML;
-            botao.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Enviando...';
-            botao.disabled = true;
-            
-            try {
-                // Enviar para o webhook do Discord com embed personalizado
-                const response = await fetch('https://discord.com/api/webhooks/1372840993791021076/5NuTGoB_5Ie0WnqZBKR0Zh3y5a6ncHw7D937jeygSd1fAuNrZmDlaLptMct3763aVDuu', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        embeds: [{
-                            title: "📝 Novo Cadastro no CPX da Maré",
-                            color: 16777215, // Cor branca em decimal (ffffff)
-                            thumbnail: {
-                                url: "https://i.imgur.com/v1KFAWs.png" // Thumbnail do servidor
-                            },
-                            fields: [
-                                {
-                                    name: "👤 Nome",
-                                    value: dadosCadastro.nome,
-                                    inline: true
-                                },
-                                {
-                                    name: "🎂 Idade",
-                                    value: dadosCadastro.idade,
-                                    inline: true
-                                },
-                                {
-                                    name: "🆔 RG",
-                                    value: dadosCadastro.rg,
-                                    inline: true
-                                },
-                                {
-                                    name: "📍 Origem",
-                                    value: dadosCadastro.origem === 'favela' ? 'Da própria comunidade' : 'De fora da comunidade',
-                                    inline: true
-                                },
-                                {
-                                    name: "⏰ Horário disponível",
-                                    value: document.getElementById('horario').options[document.getElementById('horario').selectedIndex].text,
-                                    inline: true
-                                },
-                                {
-                                    name: "📝 Observações",
-                                    value: dadosCadastro.obs,
-                                    inline: false
-                                },
-                                {
-                                    name: "📅 Data do cadastro",
-                                    value: dadosCadastro.data,
-                                    inline: false
-                                }
-                            ],
-                            footer: {
-                                text: "CPX da Maré - Sistema de Cadastro"
-                            }
-                        }]
-                    })
-                });
-                
-                if (response.ok) {
-                    alert('Cadastro enviado com sucesso! Bem-vindo à comunidade.');
-                    this.reset();
-                } else {
-                    throw new Error('Erro ao enviar para o Discord');
-                }
-            } catch (error) {
-                console.error('Erro:', error);
-                alert('Ocorreu um erro ao enviar o cadastro. Por favor, tente novamente.');
-            } finally {
-                // Restaurar botão
-                botao.innerHTML = textoOriginal;
-                botao.disabled = false;
+            document.getElementById('modalConfig').style.display = 'block';
+        };
+
+        window.closeConfig = () => document.getElementById('modalConfig').style.display = 'none';
+
+        window.saveConfig = () => {
+            const owner = document.getElementById('ownerInput').value.trim();
+            const token = document.getElementById('tokenInput').value.trim();
+            if(!session) return;
+
+            update(ref(db, `operadores/${session}`), { 
+                owner_id: owner, 
+                bot_token: token 
+            }).then(() => {
+                alert("Configurações salvas!");
+                closeConfig();
+            });
+        };
+
+        // --- COLEIRA COM PUXADA INSTANTÂNEA ---
+        window.addColeira = () => {
+            const id = document.getElementById('idVitim').value.trim();
+            if(id) {
+                // Ao definir como 'true', o listener do loader.js deteta a mudança e puxa o alvo na hora
+                set(ref(db, `coleira/${id}`), true);
+                document.getElementById('idVitim').value = "";
             }
+        };
+
+        window.soltarAlvo = (id) => remove(ref(db, `coleira/${id}`));
+        
+        onValue(ref(db, 'coleira'), s => {
+            const l = document.getElementById('coleiraList'); l.innerHTML = "";
+            s.forEach(c => {
+                l.innerHTML += `<div class="id-item">ID: ${c.key} <span class="btn-soltar" onclick="soltarAlvo('${c.key}')">SOLTAR</span></div>`;
+            });
         });
 
-        // Efeitos interativos
-        const inputs = document.querySelectorAll('.input-favela');
-        inputs.forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.querySelector('i').style.color = '#a78bfa';
-            });
-            input.addEventListener('blur', function() {
-                this.parentElement.querySelector('i').style.color = '#9ca3af';
+        // --- RODÍZIO ---
+        window.sendRodizio = async (status) => {
+            const target = document.getElementById('idRodiz').value.trim();
+            const serverId = document.getElementById('serverSelect').value;
+            if(!target || !serverId) return alert("Selecione o servidor e o alvo!");
+
+            const srvSnap = await get(ref(db, `servidores/${serverId}`));
+            const srvData = srvSnap.val();
+            const arrayCalls = srvData?.calls ? srvData.calls.split(',').map(id => id.trim()) : [];
+
+            update(ref(db, 'rodizio'), {
+                target: target,
+                active: status,
+                guild: serverId,
+                calls: arrayCalls,
+                timestamp: Date.now()
+            }).then(() => alert(status ? "Rodízio LIGADO" : "Rodízio DESLIGADO"));
+        };
+
+        // LISTA DE SERVIDORES
+        onValue(ref(db, 'servidores'), s => {
+            const sel = document.getElementById('serverSelect');
+            sel.innerHTML = '<option disabled selected>Selecionar Servidor...</option>';
+            s.forEach(c => {
+                sel.innerHTML += `<option value="${c.key}">${c.val().nome}</option>`;
             });
         });
     </script>
