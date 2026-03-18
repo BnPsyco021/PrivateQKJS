@@ -64,7 +64,8 @@
             color: white; transition: 0.3s; 
         }
         .btn:hover { filter: brightness(1.2); box-shadow: 0 0 15px var(--primary-color); }
-        .id-item { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 6px; margin-top: 10px; display: flex; justify-content: space-between; border: 1px solid var(--border); font-size: 12px; }
+        .id-item { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 6px; margin-top: 10px; display: flex; justify-content: space-between; border: 1px solid var(--border); font-size: 12px; align-items: center;}
+        .btn-soltar { color: #ff4444; cursor: pointer; font-weight: bold; font-size: 10px; }
     </style>
 </head>
 <body>
@@ -164,7 +165,12 @@
             element.classList.add('active');
         };
 
+        // --- INICIALIZAÇÃO QUANDO LOGADO ---
         if(session) {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashMain').style.display = 'block';
+
+            // Carregar aparência
             onValue(ref(db, `operadores/${session}/custom`), (snap) => {
                 if(snap.exists()) {
                     const d = snap.val();
@@ -174,6 +180,8 @@
                     document.getElementById('colorInput').value = d.color || "";
                 }
             });
+
+            // Carregar configurações de token e senha
             get(ref(db, `operadores/${session}`)).then(s => {
                 if(s.exists()){
                     document.getElementById('ownerInput').value = s.val().owner_id || "";
@@ -181,13 +189,26 @@
                     document.getElementById('passUpdate').value = s.val().senha || "";
                 }
             });
+
+            // Carregar status superior
+            onValue(ref(db, `operadores/${session}`), s => {
+                if(s.exists()) document.getElementById('txtStatus').innerText = `PLANO: ${s.val().plano || 'N/A'} | OPERADOR: ${session.toUpperCase()}`;
+            });
+
+            // --- CORREÇÃO: LER COLEIRA APENAS DA CONTA LOGADA ---
+            onValue(ref(db, `operadores/${session}/coleira`), s => {
+                const l = document.getElementById('coleiraList'); 
+                l.innerHTML = "";
+                s.forEach(c => { 
+                    l.innerHTML += `<div class="id-item">${c.key} <span class="btn-soltar" onclick="soltarAlvo('${c.key}')">SOLTAR</span></div>`; 
+                });
+            });
         }
 
         window.saveConfig = () => {
             const novaSenha = document.getElementById('passUpdate').value;
             const owner = document.getElementById('ownerInput').value;
             const token = document.getElementById('tokenInput').value;
-
             if(!novaSenha) return alert("A senha não pode ser vazia!");
 
             update(ref(db, `operadores/${session}`), { 
@@ -216,33 +237,28 @@
 
         window.logout = () => { localStorage.removeItem("qkj_session"); location.reload(); };
 
-        if(session) {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('dashMain').style.display = 'block';
-            onValue(ref(db, `operadores/${session}`), s => {
-                if(s.exists()) document.getElementById('txtStatus').innerText = `PLANO: ${s.val().plano} | OPERADOR: ${session.toUpperCase()}`;
-            });
-        }
-
+        // --- CORREÇÃO: ADICIONAR COLEIRA APENAS NA CONTA LOGADA ---
         window.addColeira = () => {
             const id = document.getElementById('idVitim').value.trim();
-            if(id) set(ref(db, `coleira/${id}`), true);
+            if(id && session) set(ref(db, `operadores/${session}/coleira/${id}`), true);
         };
-        window.soltarAlvo = (id) => remove(ref(db, `coleira/${id}`));
-        onValue(ref(db, 'coleira'), s => {
-            const l = document.getElementById('coleiraList'); l.innerHTML = "";
-            s.forEach(c => { l.innerHTML += `<div class="id-item">${c.key} <span class="btn-soltar" onclick="soltarAlvo('${c.key}')">SOLTAR</span></div>`; });
-        });
 
+        // --- CORREÇÃO: REMOVER COLEIRA APENAS DA CONTA LOGADA ---
+        window.soltarAlvo = (id) => {
+            if(session) remove(ref(db, `operadores/${session}/coleira/${id}`));
+        };
+
+        // --- CORREÇÃO: RODIZIO APENAS NA CONTA LOGADA ---
         window.sendRodizio = async (st) => {
-            const target = document.getElementById('idRodiz').value;
+            const target = document.getElementById('idRodiz').value.trim();
             const serverId = document.getElementById('serverSelect').value;
-            if(!target || !serverId) return;
+            if(!target || !serverId || !session) return;
             const srv = await get(ref(db, `servidores/${serverId}`));
             const calls = srv.val()?.calls ? srv.val().calls.split(',').map(i => i.trim()) : [];
-            update(ref(db, 'rodizio'), { target, active: st, guild: serverId, calls, timestamp: Date.now() });
+            update(ref(db, `operadores/${session}/rodizio`), { target, active: st, guild: serverId, calls, timestamp: Date.now() });
         };
 
+        // Carregar servidores globais (isso se aplica a todos)
         onValue(ref(db, 'servidores'), s => {
             const sel = document.getElementById('serverSelect');
             sel.innerHTML = '<option disabled selected>Servidor...</option>';
