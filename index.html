@@ -2,40 +2,32 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>QKJ PRIVATE | QKJ</title>
+    <title>4M PRIVATE | CONTROLE</title>
     <style>
         :root { 
-            --primary-color: #111184; 
-            --card: rgba(15, 16, 22, 0.96); 
-            --input: #1c1d26; 
-            --border: #1f212a; 
+            --primary-color: #8A2BE2; 
+            --card: rgba(26, 27, 33, 0.85); 
+            --input: #15161a; 
+            --border: #2d2e38; 
         }
         
         body { 
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            color: white; 
-            font-family: 'Segoe UI', sans-serif; 
-            margin: 0; 
-            display: flex; 
-            min-height: 100vh;
-            transition: 0.5s;
+            background-color: #0d0e12;
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            background-attachment: fixed; color: white; font-family: 'Segoe UI', sans-serif; 
+            margin: 0; display: flex; min-height: 100vh; transition: 0.5s;
         }
 
         body::before {
-            content: "";
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            z-index: -1;
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); z-index: -1;
         }
         
-        #loginScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 11, 16, 0.98); z-index: 999; display: flex; align-items: center; justify-content: center; }
-        .login-box { background: var(--card); padding: 40px; border-radius: 12px; border: 1px solid var(--border); width: 320px; text-align: center; }
+        #loginScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 11, 16, 0.95); z-index: 999; display: flex; align-items: center; justify-content: center; }
+        .login-box { background: var(--card); backdrop-filter: blur(12px); padding: 40px; border-radius: 12px; border: 1px solid var(--border); width: 320px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
         
         .sidebar { 
-            width: 70px; height: 100vh; background: var(--card); border-right: 1px solid var(--border); 
+            width: 70px; height: 100vh; background: var(--card); backdrop-filter: blur(12px); border-right: 1px solid var(--border); 
             display: flex; flex-direction: column; justify-content: space-between; align-items: center; 
             padding: 30px 0; position: fixed; left: 0; top: 0; z-index: 100; box-sizing: border-box;
         }
@@ -44,35 +36,36 @@
         
         .sidebar-icon { width: 26px; cursor: pointer; opacity: 0.4; filter: invert(1); transition: 0.3s; }
         .sidebar-icon.active { opacity: 1; filter: invert(1) drop-shadow(0 0 8px var(--primary-color)); }
-        .sidebar-icon:hover { opacity: 1; filter: invert(1) drop-shadow(0 0 5px var(--primary-color)); }
+        .sidebar-icon:hover { opacity: 0.8; }
         
         .main { flex: 1; padding: 20px 40px; margin-left: 70px; display: none; }
         .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         .status-bar { background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border); padding: 15px; border-radius: 8px; margin: 20px 0; font-size: 13px; border-left: 4px solid var(--primary-color); }
-        .section-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+        .section-card { background: var(--card); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
         .section-title { font-size: 11px; border-left: 3px solid var(--primary-color); padding-left: 10px; text-transform: uppercase; margin-bottom: 20px; font-weight: bold; color: #aaa; }
         
-        input, select { width: 100%; background: var(--input); border: 1px solid var(--border); padding: 14px; color: white; border-radius: 8px; margin-bottom: 15px; box-sizing: border-box; outline: none; }
+        input, select { width: 100%; background: var(--input); border: 1px solid var(--border); padding: 14px; color: white; border-radius: 8px; margin-bottom: 15px; box-sizing: border-box; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--primary-color); box-shadow: 0 0 5px rgba(138, 43, 226, 0.3); }
         
         .btn { 
             width: 100%; padding: 15px; border: none; border-radius: 8px; font-weight: bold; 
-            cursor: pointer; text-transform: uppercase; 
-            background-color: var(--primary-color) !important; 
+            cursor: pointer; text-transform: uppercase; background-color: var(--primary-color); 
             color: white; transition: 0.3s; 
         }
-        .btn:hover { filter: brightness(1.2); box-shadow: 0 0 15px var(--primary-color); }
+        .btn:hover { filter: brightness(1.2); }
         .id-item { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 6px; margin-top: 10px; display: flex; justify-content: space-between; border: 1px solid var(--border); font-size: 12px; align-items: center;}
-        .btn-soltar { color: #ff4444; cursor: pointer; font-weight: bold; font-size: 10px; }
+        .btn-soltar { color: var(--primary-color); cursor: pointer; font-weight: bold; font-size: 10px; transition: 0.3s;}
+        .btn-soltar:hover { filter: brightness(1.3); }
     </style>
 </head>
 <body>
 
     <div id="loginScreen">
         <div class="login-box">
-            <h2 style="margin-bottom:30px;">QKJ <span style="color:var(--primary-color)">PRIVATE</span></h2>
+            <h2 style="margin-bottom:30px;">4M <span style="color:var(--primary-color)">PRIVATE</span></h2>
             <input type="text" id="userIn" placeholder="USUÁRIO">
             <input type="password" id="passIn" placeholder="SENHA">
             <button class="btn" onclick="tentarLogin()">ENTRAR</button>
@@ -91,37 +84,41 @@
     </div>
 
     <div class="main" id="dashMain">
-        <div style="font-size: 12px; font-weight: bold;">QKJ <span style="color:var(--primary-color)">PRIVATE</span></div>
+        <div style="font-size: 12px; font-weight: bold;">4M <span style="color:var(--primary-color)">PRIVATE</span></div>
         <div class="status-bar" id="txtStatus">SESSÃO ATIVA</div>
 
         <div id="home" class="tab-content active">
-            <div class="section-card">
-                <div class="section-title">Servidor</div>
-                <select id="serverSelect"><option disabled selected>Carregando...</option></select>
-            </div>
             <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                
                 <div class="section-card" style="flex: 1; min-width: 280px;">
                     <div class="section-title">Coleira</div>
-                    <input type="text" id="idVitim" placeholder="ID da Vítima">
-                    <button class="btn" onclick="addColeira()">PRENDER</button>
+                    <input type="text" id="idVitim" placeholder="ID do Usuário">
+                    <button class="btn" onclick="addColeira()">PRENDER NA COLEIRA</button>
                     <div id="coleiraList"></div>
                 </div>
+
+                <div class="section-card" style="flex: 1; min-width: 280px;">
+                    <div class="section-title">Controle de Call (Mutar)</div>
+                    <p style="font-size: 12px; color: #888; margin-bottom: 20px;">Controla o áudio de todos na sua call (exceto você).</p>
+                    <button class="btn" onclick="sendMutarGeral('mutar')">MUTAR TODOS</button>
+                    <button class="btn" style="background:#15161a; margin-top:8px; border:1px solid var(--border);" onclick="sendMutarGeral('desmutar')">DESMUTAR TODOS</button>
+                </div>
+
                 <div class="section-card" style="flex: 1; min-width: 280px;">
                     <div class="section-title">Rodízio</div>
-                    <input type="text" id="idRodiz" placeholder="ID do Alvo">
-                    <button class="btn" onclick="sendRodizio(true)">LIGAR</button>
-                    <button class="btn" style="background:#0a0a0a !important; margin-top:8px; opacity: 0.6;" onclick="sendRodizio(false)">DESLIGAR</button>
+                    <p style="font-size: 12px; color: #888; margin-bottom: 20px;">Move o alvo infinitamente entre as calls do servidor.</p>
+                    <input type="text" id="idRodizio" placeholder="ID do Alvo">
+                    <button class="btn" id="btnRodizio" onclick="toggleRodizio()">INICIAR RODÍZIO</button>
                 </div>
+
             </div>
         </div>
 
         <div id="settings" class="tab-content">
             <div class="section-card">
-                <div class="section-title">Configurações do Bot</div>
-                <label style="font-size: 11px; color: #666;">ID DO DONO</label>
+                <div class="section-title">Configurações do Discord</div>
+                <label style="font-size: 11px; color: #666;">SEU ID DO DISCORD (OBRIGATÓRIO)</label>
                 <input type="text" id="ownerInput" placeholder="ID Discord">
-                <label style="font-size: 11px; color: #666;">TOKEN DO DISCORD</label>
-                <input type="password" id="tokenInput" placeholder="Token do Bot">
                 
                 <div style="border-top: 1px solid var(--border); margin-top: 20px; padding-top: 20px;">
                     <div class="section-title">Acesso à Conta</div>
@@ -139,24 +136,29 @@
                 <label style="font-size: 11px; color: #666;">WALLPAPER URL</label>
                 <input type="text" id="wallInput" placeholder="Link da imagem">
                 <label style="font-size: 11px; color: #666;">COR PRINCIPAL (HEX)</label>
-                <input type="text" id="colorInput" placeholder="#111184">
+                <input type="text" id="colorInput" placeholder="#8A2BE2">
                 <button class="btn" onclick="saveCustom()">ATUALIZAR TEMA</button>
             </div>
         </div>
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getDatabase, ref, set, update, onValue, remove, get } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getDatabase, ref, set, update, onValue, remove, get } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyB3lO20V8QMqx3BCjiLAxlz5_GnuL5yH-k",
-            databaseURL: "https://contas-b30ba-default-rtdb.firebaseio.com",
-            projectId: "contas-b30ba"
+            apiKey: "AIzaSyCG34rIqOLqjuLrDIb1_co4Em7buRC4afU",
+            authDomain: "painelcontas-58d15.firebaseapp.com",
+            databaseURL: "https://painelcontas-58d15-default-rtdb.firebaseio.com",
+            projectId: "painelcontas-58d15",
+            storageBucket: "painelcontas-58d15.firebasestorage.app",
+            messagingSenderId: "775791136662",
+            appId: "1:775791136662:web:f69034f635f0218a5997b7"
         };
+
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        const session = localStorage.getItem("qkj_session");
+        const session = localStorage.getItem("4m_session");
 
         window.switchTab = (tabId, element) => {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -165,12 +167,11 @@
             element.classList.add('active');
         };
 
-        // --- INICIALIZAÇÃO QUANDO LOGADO ---
         if(session) {
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('dashMain').style.display = 'block';
 
-            // Carregar aparência
+            // Carrega UI e Tema
             onValue(ref(db, `operadores/${session}/custom`), (snap) => {
                 if(snap.exists()) {
                     const d = snap.val();
@@ -181,21 +182,18 @@
                 }
             });
 
-            // Carregar configurações de token e senha
             get(ref(db, `operadores/${session}`)).then(s => {
                 if(s.exists()){
                     document.getElementById('ownerInput').value = s.val().owner_id || "";
-                    document.getElementById('tokenInput').value = s.val().bot_token || "";
                     document.getElementById('passUpdate').value = s.val().senha || "";
                 }
             });
 
-            // Carregar status superior
             onValue(ref(db, `operadores/${session}`), s => {
                 if(s.exists()) document.getElementById('txtStatus').innerText = `PLANO: ${s.val().plano || 'N/A'} | OPERADOR: ${session.toUpperCase()}`;
             });
 
-            // --- CORREÇÃO: LER COLEIRA APENAS DA CONTA LOGADA ---
+            // Carrega Lista Coleira
             onValue(ref(db, `operadores/${session}/coleira`), s => {
                 const l = document.getElementById('coleiraList'); 
                 l.innerHTML = "";
@@ -203,19 +201,37 @@
                     l.innerHTML += `<div class="id-item">${c.key} <span class="btn-soltar" onclick="soltarAlvo('${c.key}')">SOLTAR</span></div>`; 
                 });
             });
+
+            // Sincroniza Botão Rodízio
+            onValue(ref(db, `operadores/${session}/rodizio`), s => {
+                if(s.exists() && s.val().active) {
+                    document.getElementById('btnRodizio').innerText = "PARAR RODÍZIO";
+                    document.getElementById('btnRodizio').style.backgroundColor = "#ff4444";
+                    document.getElementById('idRodizio').value = s.val().target;
+                } else {
+                    document.getElementById('btnRodizio').innerText = "INICIAR RODÍZIO";
+                    document.getElementById('btnRodizio').style.backgroundColor = "var(--primary-color)";
+                }
+            });
         }
+
+        window.tentarLogin = async () => {
+            const u = document.getElementById('userIn').value.toLowerCase().trim();
+            const p = document.getElementById('passIn').value;
+            const snap = await get(ref(db, `operadores/${u}`));
+            if(snap.exists() && snap.val().senha === p) {
+                localStorage.setItem("4m_session", u);
+                location.reload();
+            } else { alert("Usuário ou Senha incorretos!"); }
+        };
+
+        window.logout = () => { localStorage.removeItem("4m_session"); location.reload(); };
 
         window.saveConfig = () => {
             const novaSenha = document.getElementById('passUpdate').value;
             const owner = document.getElementById('ownerInput').value;
-            const token = document.getElementById('tokenInput').value;
             if(!novaSenha) return alert("A senha não pode ser vazia!");
-
-            update(ref(db, `operadores/${session}`), { 
-                owner_id: owner, 
-                bot_token: token,
-                senha: novaSenha
-            }).then(() => alert("Configurações e Senha atualizadas!"));
+            update(ref(db, `operadores/${session}`), { owner_id: owner, senha: novaSenha }).then(() => alert("Salvo!"));
         };
 
         window.saveCustom = () => {
@@ -225,45 +241,43 @@
             }).then(() => alert("Aparência Salva!"));
         };
 
-        window.tentarLogin = async () => {
-            const u = document.getElementById('userIn').value.toLowerCase().trim();
-            const p = document.getElementById('passIn').value;
-            const snap = await get(ref(db, `operadores/${u}`));
-            if(snap.exists() && snap.val().senha === p) {
-                localStorage.setItem("qkj_session", u);
-                location.reload();
-            } else { alert("Usuário ou Senha incorretos!"); }
-        };
-
-        window.logout = () => { localStorage.removeItem("qkj_session"); location.reload(); };
-
-        // --- CORREÇÃO: ADICIONAR COLEIRA APENAS NA CONTA LOGADA ---
         window.addColeira = () => {
             const id = document.getElementById('idVitim').value.trim();
             if(id && session) set(ref(db, `operadores/${session}/coleira/${id}`), true);
         };
 
-        // --- CORREÇÃO: REMOVER COLEIRA APENAS DA CONTA LOGADA ---
         window.soltarAlvo = (id) => {
             if(session) remove(ref(db, `operadores/${session}/coleira/${id}`));
         };
 
-        // --- CORREÇÃO: RODIZIO APENAS NA CONTA LOGADA ---
-        window.sendRodizio = async (st) => {
-            const target = document.getElementById('idRodiz').value.trim();
-            const serverId = document.getElementById('serverSelect').value;
-            if(!target || !serverId || !session) return;
-            const srv = await get(ref(db, `servidores/${serverId}`));
-            const calls = srv.val()?.calls ? srv.val().calls.split(',').map(i => i.trim()) : [];
-            update(ref(db, `operadores/${session}/rodizio`), { target, active: st, guild: serverId, calls, timestamp: Date.now() });
+        window.sendMutarGeral = (actionType) => {
+            if(!session) return;
+            update(ref(db, `operadores/${session}/mutarGeral`), { 
+                action: actionType, 
+                timestamp: Date.now() 
+            }).then(() => {
+                const msg = actionType === 'mutar' ? 'Comando enviado: Mutar todos.' : 'Comando enviado: Desmutar todos.';
+                alert(msg);
+            });
         };
 
-        // Carregar servidores globais (isso se aplica a todos)
-        onValue(ref(db, 'servidores'), s => {
-            const sel = document.getElementById('serverSelect');
-            sel.innerHTML = '<option disabled selected>Servidor...</option>';
-            s.forEach(c => { sel.innerHTML += `<option value="${c.key}">${c.val().nome}</option>`; });
-        });
+        // FUNÇÃO DE TOGGLE DO RODÍZIO
+        window.toggleRodizio = async () => {
+            if(!session) return;
+            const id = document.getElementById('idRodizio').value.trim();
+            
+            const snap = await get(ref(db, `operadores/${session}/rodizio/active`));
+            const isActive = snap.exists() ? snap.val() : false;
+            
+            if (isActive) {
+                // Desliga o rodízio
+                update(ref(db, `operadores/${session}/rodizio`), { active: false, target: null });
+            } else {
+                // Liga o rodízio
+                if(!id) return alert("Preencha o ID do alvo para o rodízio!");
+                update(ref(db, `operadores/${session}/rodizio`), { active: true, target: id });
+            }
+        };
     </script>
 </body>
 </html>
